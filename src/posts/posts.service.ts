@@ -13,9 +13,19 @@ export class PostsService {
   ) {}
 
   async createPost(dto: CreatePostDto, user: User) {
-    const post = this.postRepo.create({ ...dto, author: user });
-    return this.postRepo.save(post);
-  }
+  const post = this.postRepo.create({
+    title: dto.title,
+    subtitle: dto.subtitle,
+    description: dto.description,
+    image: dto.image,
+    author: user,
+  });
+
+  // Debug log to ensure correct values
+  console.log('Saving post entity:', post);
+
+  return this.postRepo.save(post);
+}
 
   async getAllPosts(page: number = 1, limit: number = 6) {
     return this.postRepo.find({
@@ -30,3 +40,4 @@ export class PostsService {
     return this.postRepo.findOne({ where: { id }, relations: ['author'] });
   }
 }
+
